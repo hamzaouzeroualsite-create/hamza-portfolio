@@ -262,8 +262,7 @@
   /* ---------- 3D Tilt ---------- */
   function initTilt() {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const finePointer = window.matchMedia('(pointer: fine)').matches;
-    if (prefersReduced || !finePointer) return;
+    if (prefersReduced) return;
 
     /* Interactive tilt for content cards */
     const cardSelector = '.info-card, .skill-card, .project-card, .contact-card';
