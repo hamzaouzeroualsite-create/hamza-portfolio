@@ -735,7 +735,6 @@ ul {
 
 .info-card:hover {
   border-color: var(--border-hover);
-  transform: translateY(-4px);
   box-shadow: var(--shadow);
 }
 
@@ -805,7 +804,6 @@ ul {
 
 .skill-card:hover {
   border-color: var(--accent);
-  transform: translateY(-6px);
   box-shadow: 0 12px 40px var(--accent-glow);
 }
 
@@ -866,7 +864,6 @@ ul {
 
 .project-card:hover {
   border-color: var(--border-hover);
-  transform: translateY(-8px);
   box-shadow: var(--shadow-lg);
 }
 
@@ -987,7 +984,6 @@ ul {
 
 .contact-card:hover {
   border-color: var(--accent);
-  transform: translateY(-6px);
   box-shadow: 0 12px 40px var(--accent-glow);
 }
 
@@ -1022,6 +1018,91 @@ ul {
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--text-primary);
+}
+
+/* ============================================
+   3D effects
+   ============================================ */
+
+/* Cursor-driven 3D tilt (transform applied inline via JS) */
+.info-card,
+.skill-card,
+.project-card,
+.contact-card {
+  will-change: transform;
+  transform-origin: center;
+}
+
+/* Hero profile — 3D parallax card */
+.hero__visual {
+  position: relative;
+  perspective: 1100px;
+}
+
+.profile-card {
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.profile-card__glow { transform: translateZ(-60px); }
+
+.profile-card__image {
+  transform: translateZ(40px);
+}
+
+.profile-card:hover .profile-card__image {
+  transform: translateZ(60px);
+}
+
+.profile-card__badge {
+  transform: translateZ(80px);
+}
+
+/* Auto-rotating 3D tech cube */
+.cube-3d {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 92px;
+  height: 92px;
+  perspective: 700px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.cube-3d__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: cubeSpin 16s linear infinite;
+}
+
+.cube-3d__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.28), rgba(236, 72, 153, 0.22));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: inset 0 0 24px rgba(255, 255, 255, 0.08);
+}
+
+.cube-3d__face--front  { transform: rotateY(0deg) translateZ(46px); }
+.cube-3d__face--back   { transform: rotateY(180deg) translateZ(46px); }
+.cube-3d__face--right  { transform: rotateY(90deg) translateZ(46px); }
+.cube-3d__face--left   { transform: rotateY(-90deg) translateZ(46px); }
+.cube-3d__face--top    { transform: rotateX(90deg) translateZ(46px); }
+.cube-3d__face--bottom { transform: rotateX(-90deg) translateZ(46px); }
+
+@keyframes cubeSpin {
+  0%   { transform: rotateX(-20deg) rotateY(0deg); }
+  100% { transform: rotateX(-20deg) rotateY(360deg); }
 }
 
 /* Interactive cursor spotlight on cards */

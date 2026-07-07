@@ -259,6 +259,58 @@
     });
   }
 
+  /* ---------- 3D Tilt ---------- */
+  function initTilt() {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const finePointer = window.matchMedia('(pointer: fine)').matches;
+    if (prefersReduced || !finePointer) return;
+
+    /* Interactive tilt for content cards */
+    const cardSelector = '.info-card, .skill-card, .project-card, .contact-card';
+    const MAX = 9;
+    let activeCard = null;
+
+    document.addEventListener('pointermove', (e) => {
+      const card = e.target.closest(cardSelector);
+      if (card !== activeCard) {
+        if (activeCard) resetCard(activeCard);
+        activeCard = card;
+      }
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width;
+      const py = (e.clientY - rect.top) / rect.height;
+      const ry = (px - 0.5) * 2 * MAX;
+      const rx = -(py - 0.5) * 2 * MAX;
+      card.style.transition = 'transform 0s';
+      card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.03)`;
+    });
+
+    function resetCard(card) {
+      card.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
+      card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)';
+    }
+
+    /* Parallax tilt for hero profile card */
+    const profile = document.querySelector('.profile-card');
+    if (profile) {
+      const wrap = profile.closest('.hero__visual') || profile;
+      wrap.addEventListener('pointermove', (e) => {
+        const rect = profile.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width;
+        const py = (e.clientY - rect.top) / rect.height;
+        const ry = (px - 0.5) * 2 * 12;
+        const rx = -(py - 0.5) * 2 * 12;
+        profile.style.transition = 'transform 0s';
+        profile.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+      wrap.addEventListener('pointerleave', () => {
+        profile.style.transition = 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
+        profile.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      });
+    }
+  }
+
   /* ---------- Init ---------- */
   document.addEventListener('DOMContentLoaded', () => {
     initTheme();
@@ -271,5 +323,6 @@
     initCounters();
     initScrollUI();
     initSpotlight();
+    initTilt();
   });
 })();
