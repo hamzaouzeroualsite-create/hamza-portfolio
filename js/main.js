@@ -264,50 +264,43 @@
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) return;
 
-    /* Interactive tilt for content cards */
-    const cardSelector = '.info-card, .skill-card, .project-card, .contact-card';
+    /* Interactive tilt for content cards (per-element listeners for reliability) */
+    const cards = document.querySelectorAll('.info-card, .skill-card, .project-card, .contact-card');
     const MAX = 15;
-    let activeCard = null;
 
-    document.addEventListener('pointermove', (e) => {
-      const card = e.target.closest(cardSelector);
-      if (card !== activeCard) {
-        if (activeCard) resetCard(activeCard);
-        activeCard = card;
-      }
-      if (!card) return;
-      const rect = card.getBoundingClientRect();
-      const px = (e.clientX - rect.left) / rect.width;
-      const py = (e.clientY - rect.top) / rect.height;
-      const ry = (px - 0.5) * 2 * MAX;
-      const rx = -(py - 0.5) * 2 * MAX;
-      card.style.transition = 'transform 0.08s ease-out, box-shadow 0.2s ease';
-      card.style.transform = `perspective(650px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.06)`;
-      card.style.boxShadow = `${-ry}px ${rx + 18}px 40px rgba(0, 0, 0, 0.35)`;
-      card.style.zIndex = '5';
+    cards.forEach((card) => {
+      card.addEventListener('pointermove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width;
+        const py = (e.clientY - rect.top) / rect.height;
+        const ry = (px - 0.5) * 2 * MAX;
+        const rx = -(py - 0.5) * 2 * MAX;
+        card.style.transition = 'transform 0.08s ease-out, box-shadow 0.2s ease';
+        card.style.transform = `perspective(650px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.06)`;
+        card.style.boxShadow = `${-ry}px ${rx + 18}px 40px rgba(0, 0, 0, 0.35)`;
+        card.style.zIndex = '5';
+      });
+      card.addEventListener('pointerleave', () => {
+        card.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease';
+        card.style.transform = 'perspective(650px) rotateX(0deg) rotateY(0deg) scale(1)';
+        card.style.boxShadow = '';
+        card.style.zIndex = '';
+      });
     });
-
-    function resetCard(card) {
-      card.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease';
-      card.style.transform = 'perspective(650px) rotateX(0deg) rotateY(0deg) scale(1)';
-      card.style.boxShadow = '';
-      card.style.zIndex = '';
-    }
 
     /* Parallax tilt for hero profile card */
     const profile = document.querySelector('.profile-card');
     if (profile) {
-      const wrap = profile.closest('.hero__visual') || profile;
-      wrap.addEventListener('pointermove', (e) => {
+      profile.addEventListener('pointermove', (e) => {
         const rect = profile.getBoundingClientRect();
         const px = (e.clientX - rect.left) / rect.width;
         const py = (e.clientY - rect.top) / rect.height;
-        const ry = (px - 0.5) * 2 * 12;
-        const rx = -(py - 0.5) * 2 * 12;
-        profile.style.transition = 'transform 0s';
+        const ry = (px - 0.5) * 2 * 14;
+        const rx = -(py - 0.5) * 2 * 14;
+        profile.style.transition = 'transform 0.1s ease-out';
         profile.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
       });
-      wrap.addEventListener('pointerleave', () => {
+      profile.addEventListener('pointerleave', () => {
         profile.style.transition = 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
         profile.style.transform = 'rotateX(0deg) rotateY(0deg)';
       });
