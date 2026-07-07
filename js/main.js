@@ -108,10 +108,11 @@
     grid.innerHTML = skills
       .map(
         (skill) => `
-        <div class="skill-card reveal">
+        <div class="skill-card reveal" style="--level: ${skill.percent}%">
           <span class="skill-card__icon" aria-hidden="true">${skill.icon}</span>
           <span class="skill-card__name">${skill.name}</span>
-          <span class="skill-card__level">${skill.level}</span>
+          <span class="skill-card__level">${skill.level} · ${skill.percent}%</span>
+          <span class="skill-card__bar"><span class="skill-card__bar-fill"></span></span>
         </div>`
       )
       .join('');
@@ -158,6 +159,106 @@
     if (yearEl) yearEl.textContent = new Date().getFullYear();
   }
 
+  /* ---------- Rotating Hero Roles ---------- */
+  function initRoleRotator() {
+    const container = document.getElementById('heroRoles');
+    if (!container) return;
+
+    const roles = [
+      'Flutter Developer',
+      'Mobile App Builder',
+      'UI/UX Enthusiast',
+      'Problem Solver',
+    ];
+    let index = 0;
+    const el = container.querySelector('.hero__role');
+    if (!el) return;
+
+    setInterval(() => {
+      index = (index + 1) % roles.length;
+      el.classList.remove('is-active');
+      window.setTimeout(() => {
+        el.textContent = roles[index];
+        el.classList.add('is-active');
+      }, 350);
+    }, 2600);
+  }
+
+  /* ---------- Animated Counters ---------- */
+  function initCounters() {
+    const counters = document.querySelectorAll('[data-count]');
+    if (!counters.length) return;
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const animate = (el) => {
+      const target = parseInt(el.getAttribute('data-count'), 10) || 0;
+      const suffix = el.getAttribute('data-suffix') || '';
+      if (prefersReduced) {
+        el.textContent = `${target}${suffix}`;
+        return;
+      }
+      const duration = 1400;
+      const start = performance.now();
+      const step = (now) => {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = `${Math.round(target * eased)}${suffix}`;
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animate(entry.target);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    counters.forEach((el) => observer.observe(el));
+  }
+
+  /* ---------- Scroll Progress + Back to Top ---------- */
+  function initScrollUI() {
+    const bar = document.getElementById('scrollProgress');
+    const backToTop = document.getElementById('backToTop');
+
+    const onScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+      if (bar) bar.style.transform = `scaleX(${progress})`;
+      if (backToTop) backToTop.classList.toggle('visible', scrollTop > 500);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    if (backToTop) {
+      backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  }
+
+  /* ---------- Card Cursor Spotlight ---------- */
+  function initSpotlight() {
+    const selector = '.info-card, .skill-card, .project-card, .contact-card';
+    document.addEventListener('pointermove', (e) => {
+      const card = e.target.closest(selector);
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+      card.style.setProperty('--my', `${e.clientY - rect.top}px`);
+    });
+  }
+
   /* ---------- Init ---------- */
   document.addEventListener('DOMContentLoaded', () => {
     initTheme();
@@ -166,5 +267,9 @@
     renderProjects();
     initReveal();
     initFooter();
+    initRoleRotator();
+    initCounters();
+    initScrollUI();
+    initSpotlight();
   });
 })();

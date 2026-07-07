@@ -14,9 +14,14 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
   <div class="noise" aria-hidden="true"></div>
-  <div class="gradient-orb gradient-orb--1" aria-hidden="true"></div>
-  <div class="gradient-orb gradient-orb--2" aria-hidden="true"></div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+  <div class="aurora" aria-hidden="true">
+    <span class="aurora__blob aurora__blob--1"></span>
+    <span class="aurora__blob aurora__blob--2"></span>
+    <span class="aurora__blob aurora__blob--3"></span>
+  </div>
 
   <header class="header" id="header">
     <nav class="nav container">
@@ -55,7 +60,10 @@
           <h1 class="hero__title">
             Hi, I'm <span class="gradient-text">Hamza Ouzeroual</span>
           </h1>
-          <p class="hero__subtitle">Student & Flutter Developer</p>
+          <p class="hero__subtitle">
+            <span class="hero__subtitle-static">I'm a</span>
+            <span class="hero__roles" id="heroRoles" aria-live="polite"><span class="hero__role is-active">Flutter Developer</span></span>
+          </p>
           <p class="hero__description">
             Passionate about building elegant, high-performance mobile applications.
             I combine clean code with thoughtful design to create digital experiences
@@ -67,15 +75,15 @@
           </div>
           <div class="hero__stats">
             <div class="hero__stat">
-              <span class="hero__stat-value">3+</span>
+              <span class="hero__stat-value" data-count="4" data-suffix="+">0</span>
               <span class="hero__stat-label">Projects</span>
             </div>
             <div class="hero__stat">
-              <span class="hero__stat-value">Flutter</span>
-              <span class="hero__stat-label">Specialty</span>
+              <span class="hero__stat-value" data-count="7" data-suffix="+">0</span>
+              <span class="hero__stat-label">Skills</span>
             </div>
             <div class="hero__stat">
-              <span class="hero__stat-value">100%</span>
+              <span class="hero__stat-value" data-count="100" data-suffix="%">0</span>
               <span class="hero__stat-label">Dedicated</span>
             </div>
           </div>
@@ -257,6 +265,10 @@
       <p class="footer__tagline">Built with passion & Flutter</p>
     </div>
   </footer>
+
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+  </button>
 
   <script src="js/projects.js"></script>
   <script src="js/main.js"></script>
