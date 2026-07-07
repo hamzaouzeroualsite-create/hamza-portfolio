@@ -46,11 +46,11 @@ const projects = [
 ];
 
 const skills = [
-  { name: 'Flutter', icon: '🎯', level: 'Advanced' },
-  { name: 'Firebase', icon: '🔥', level: 'Intermediate' },
-  { name: 'HTML', icon: '🌐', level: 'Advanced' },
-  { name: 'CSS', icon: '🎨', level: 'Advanced' },
-  { name: 'JavaScript', icon: '⚡', level: 'Intermediate' },
-  { name: 'Canva', icon: '✏️', level: 'Intermediate' },
-  { name: 'Excel', icon: '📊', level: 'Intermediate' },
+  { name: 'Flutter', icon: '🎯', level: 'Advanced', percent: 90 },
+  { name: 'Firebase', icon: '🔥', level: 'Intermediate', percent: 75 },
+  { name: 'HTML', icon: '🌐', level: 'Advanced', percent: 95 },
+  { name: 'CSS', icon: '🎨', level: 'Advanced', percent: 90 },
+  { name: 'JavaScript', icon: '⚡', level: 'Intermediate', percent: 70 },
+  { name: 'Canva', icon: '✏️', level: 'Intermediate', percent: 65 },
+  { name: 'Excel', icon: '📊', level: 'Intermediate', percent: 60 },
 ];
