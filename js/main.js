@@ -266,7 +266,7 @@
 
     /* Interactive tilt for content cards */
     const cardSelector = '.info-card, .skill-card, .project-card, .contact-card';
-    const MAX = 9;
+    const MAX = 15;
     let activeCard = null;
 
     document.addEventListener('pointermove', (e) => {
@@ -281,13 +281,17 @@
       const py = (e.clientY - rect.top) / rect.height;
       const ry = (px - 0.5) * 2 * MAX;
       const rx = -(py - 0.5) * 2 * MAX;
-      card.style.transition = 'transform 0s';
-      card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.03)`;
+      card.style.transition = 'transform 0.08s ease-out, box-shadow 0.2s ease';
+      card.style.transform = `perspective(650px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.06)`;
+      card.style.boxShadow = `${-ry}px ${rx + 18}px 40px rgba(0, 0, 0, 0.35)`;
+      card.style.zIndex = '5';
     });
 
     function resetCard(card) {
-      card.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
-      card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)';
+      card.style.transition = 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease';
+      card.style.transform = 'perspective(650px) rotateX(0deg) rotateY(0deg) scale(1)';
+      card.style.boxShadow = '';
+      card.style.zIndex = '';
     }
 
     /* Parallax tilt for hero profile card */
